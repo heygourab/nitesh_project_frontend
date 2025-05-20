@@ -23,7 +23,7 @@ export function ResultDialog({
   state?: CURRENT_STATE | null;
 }) {
   return (
-    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center">
+    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center ">
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>

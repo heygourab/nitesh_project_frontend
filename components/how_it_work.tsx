@@ -13,7 +13,9 @@ export function HowItWork() {
         className="size-60 md:size-64 object-cover self-center"
       />
       <div className="md:w-1/2 flex flex-col items-start">
-        <h2 className="text-xl md:text-2xl font-semibold ">How It Works?</h2>
+        <h2 className="text-xl md:text-2xl font-semibold ">
+          How It <span className="text-[#FF7AB5]">Works?</span>
+        </h2>
         <ul className="space-y-3 list-none mt-4 md:mt-8">
           <li className="flex items-center gap-3 text-gray-600">
             <span className="flex items-center justify-center bg-blue-100 rounded-full w-6 h-6 text-blue-600 text-sm">

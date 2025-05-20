@@ -18,7 +18,9 @@ export function Hero() {
       <div className="md:order-1 md:w-1/2 flex flex-col items-start">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold mt-8 ">
-            Is it Spam or Safe? Check Emails & SMS in One Click.
+            Is it <span className="text-[#DF3B34]">Spam </span>or{" "}
+            <span className="text-[#32AA88]">Safe</span>? Check Emails & SMS in
+            One Click.
           </h1>
           <p className="text-gray-500 md:text-base mt-4">
             Paste your message and let AI tell you if it&apos;s spam or safe —

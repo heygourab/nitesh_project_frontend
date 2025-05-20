@@ -14,7 +14,7 @@ export function PrivacyPolicy() {
 
       <div className="md:order-1 md:w-1/2 flex flex-col items-start">
         <h2 className="text-xl md:text-2xl font-semibold text-gray-700 mb-2">
-          Privacy First, Always.
+          Privacy First, <span className="text-[#F6A724]">Always.</span>
         </h2>
         <p className="text-gray-500 md:text-base mt-4">
           We respect your privacy. Messages you submit are processed in
