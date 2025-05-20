@@ -7,9 +7,37 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { ArrowLeft, InfoIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { checkSpam, SpamResponse } from "../actions/check_spam";
+import { CURRENT_STATE } from "../utils/enums";
 
 export default function Page() {
+  const [message, setMessage] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [currentState, setCurrentState] = useState<CURRENT_STATE | null>(null);
+  const [result, setResult] = useState<SpamResponse | null>(null);
+
+  const handleCheckSpam = async () => {
+    setCurrentState(CURRENT_STATE.LOADING);
+    setIsDialogOpen(true);
+    try {
+      const response = await checkSpam(message, "email");
+      if (response.error) {
+        setCurrentState(CURRENT_STATE.ERROR);
+        setResult(null);
+      } else {
+        setCurrentState(CURRENT_STATE.SUCCESS);
+        setResult({
+          isSpam: response.isSpam,
+          spamScore: response.spamScore ?? "",
+          spamType: response.spamType ?? "email",
+          spamConfidence: response.spamConfidence ?? "",
+        });
+      }
+    } catch (error) {
+      console.error("Error checking spam:", error);
+      setCurrentState(CURRENT_STATE.ERROR);
+    }
+  };
 
   return (
     <div className="container mx-auto px-8 py-8 max-w-4xl">
@@ -32,15 +60,20 @@ export default function Page() {
       <Textarea
         className="mt-8 min-h-[150px] w-full"
         placeholder="Paste your email message here..."
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
       />
       <div className="flex flex-col md:flex-row gap-4 mt-8">
         <Button
-          className="w-full md:w-auto md:px-8"
-          onClick={() => setIsDialogOpen(true)}
+          className="w-full md:w-auto md:px-8 md:order-2"
+          onClick={handleCheckSpam}
+          disabled={
+            message.trim() === "" || currentState === CURRENT_STATE.LOADING
+          }
         >
-          Check
+          {currentState === CURRENT_STATE.LOADING ? "Checking..." : "Check"}
         </Button>
-        <Link href="/" className="w-full md:w-auto">
+        <Link href="/" className="w-full md:w-auto md:order-1">
           <Button className="w-full md:w-auto md:px-8" variant="outline">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Go Back
@@ -63,8 +96,8 @@ export default function Page() {
         <ResultDialog
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
-          result="This is a spam email."
-          state="success"
+          result={result}
+          state={currentState}
         />
       )}
     </div>

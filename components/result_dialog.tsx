@@ -8,6 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { CURRENT_STATE } from "@/app/utils/enums";
+import { SpamResponse } from "@/app/actions/check_spam";
 
 export function ResultDialog({
   isOpen,
@@ -17,8 +19,8 @@ export function ResultDialog({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  result: string;
-  state: "loading" | "success" | "failure";
+  result: SpamResponse | null;
+  state?: CURRENT_STATE | null;
 }) {
   return (
     <div className="absolute inset-0 z-50 flex flex-col items-center justify-center">
@@ -28,7 +30,7 @@ export function ResultDialog({
             <DialogTitle>Analysis Result</DialogTitle>
           </DialogHeader>
           <div className="flex h-full flex-col items-center justify-center">
-            {state === "loading" && (
+            {state === CURRENT_STATE.LOADING && (
               <>
                 <div>
                   <DotLottieReact
@@ -44,21 +46,45 @@ export function ResultDialog({
                 </p>
               </>
             )}
-            {state === "success" && (
+            {state === CURRENT_STATE.SUCCESS && (
               <>
                 <div>
                   <DotLottieReact
-                    data={successAnimation}
+                    data={result?.isSpam ? failureAnimation : successAnimation}
                     autoplay
                     loop
                     className="size-32 object-cover"
                   />
                 </div>
                 <p>Analysis completed successfully!</p>
-                <p className="text-sm text-gray-500">The result is: {result}</p>
+                <p className="text-base text-gray-500">
+                  The result is:{" "}
+                  {result?.isSpam ? (
+                    <span className="text-red-500">This email is spam</span>
+                  ) : (
+                    <span className="text-green-500">
+                      This email is not spam
+                    </span>
+                  )}
+                </p>
+                {result?.isSpam && (
+                  <p className="text-sm text-gray-500">
+                    Spam Score: {result.spamScore}%
+                  </p>
+                )}
+                {result?.isSpam && (
+                  <p className="text-sm text-gray-500">
+                    Spam Type: {result.spamType}
+                  </p>
+                )}
+                {result?.isSpam && (
+                  <p className="text-sm text-gray-500">
+                    Spam Confidence: {result.spamConfidence}%
+                  </p>
+                )}
               </>
             )}
-            {state === "failure" && (
+            {state === CURRENT_STATE.ERROR && (
               <>
                 <div>
                   <DotLottieReact
@@ -69,7 +95,9 @@ export function ResultDialog({
                   />
                 </div>
                 <p>Analysis failed. Please try again.</p>
-                <p className="text-sm text-gray-500">This email is spam</p>
+                <p className="text-sm text-gray-500">
+                  Error: {result?.error || "Unknown error"}
+                </p>
               </>
             )}
           </div>
