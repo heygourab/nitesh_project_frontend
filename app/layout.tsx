@@ -25,9 +25,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} mx-auto flex w-full max-w-[102ch] flex-col antialiased`}
       >
         {children}
+        <footer className="mt-24 py-6 border-t text-center text-sm text-gray-500 dark:text-gray-400 dark:border-gray-700">
+          <p>
+            © {new Date().getFullYear()} Spam Detector Project • Built by Nitesh
+            Pradhan
+          </p>
+        </footer>
       </body>
     </html>
   );
