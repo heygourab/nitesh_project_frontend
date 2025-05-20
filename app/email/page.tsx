@@ -1,6 +1,6 @@
 "use client";
 import { SpamCheckerLayout } from "@/components/spam-checker-layout";
-import * as animationData from "@/public/animation/sms_animation.json";
+import * as animationData from "@/public/animation/email_animation.json";
 
 export default function Page() {
   return (
